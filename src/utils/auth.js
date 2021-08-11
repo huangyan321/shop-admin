@@ -1,13 +1,20 @@
 import Cookies from 'js-cookie'
 
-const TokenKey = 'vue_admin_template_token'
-
+const TokenKey = 'shop-admin-token'
+const RoleKey = 'shop-admin-id'
 export function getToken() {
   return Cookies.get(TokenKey)
 }
 
 export function setToken(token) {
   return Cookies.set(TokenKey, token)
+}
+
+export function setRoleId(roleId) {
+  return Cookies.set(RoleKey, roleId)
+}
+export function getRoleId(roleId) {
+  return Cookies.get(RoleKey, roleId)
 }
 
 export function removeToken() {
