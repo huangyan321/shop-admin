@@ -6,9 +6,9 @@ Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 5.4.0-65-generic x86_64)
 
 Welcome to Alibaba Cloud Elastic Compute Service !
 
-Last login: Wed Aug 11 10:32:33 2021 from 110.87.103.170
-nginx -s reload
+Last login: Thu Aug 12 00:55:27 2021 from 27.154.212.95
+rm -rf /root/git/shop-admin/
 exit
-root@iZ3c1q54jq8we9Z:~# nginx -s reload
+root@iZ3c1q54jq8we9Z:~# rm -rf /root/git/shop-admin/
 root@iZ3c1q54jq8we9Z:~# exit
 logout
