@@ -1,5 +1,5 @@
 {
-  "name": "vue-admin-template",
+  "name": "shop-admin",
   "version": "4.4.0",
   "description": "A vue admin template with Element UI & axios & iconfont & permission control & lint",
   "author": "Pan <panfree23@gmail.com>",
@@ -11,7 +11,9 @@
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
     "lint": "eslint --ext .js,.vue src",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
-    "test:ci": "npm run lint && npm run test:unit"
+    "test:ci": "npm run lint && npm run test:unit",
+    "build:deploy": "npm run build:prod && gulp deploy",
+    "deploy": "gulp deploy"
   },
   "dependencies": {
     "axios": "0.18.1",
@@ -39,6 +41,8 @@
     "connect": "3.6.6",
     "eslint": "6.7.2",
     "eslint-plugin-vue": "6.2.2",
+    "gulp": "^4.0.2",
+    "gulp-ssh": "^0.7.0",
     "html-webpack-plugin": "3.2.0",
     "mockjs": "1.0.1-beta3",
     "runjs": "4.3.2",

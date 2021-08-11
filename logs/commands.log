@@ -1,0 +1,14 @@
+Welcome to Ubuntu 20.04.1 LTS (GNU/Linux 5.4.0-65-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+Welcome to Alibaba Cloud Elastic Compute Service !
+
+Last login: Wed Aug 11 10:32:33 2021 from 110.87.103.170
+nginx -s reload
+exit
+root@iZ3c1q54jq8we9Z:~# nginx -s reload
+root@iZ3c1q54jq8we9Z:~# exit
+logout
