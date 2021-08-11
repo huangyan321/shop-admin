@@ -29,7 +29,8 @@ const config = {
   commands: [
     // 删除现有文件
     `rm -rf ${remotePath}`,
-    `nginx -s reload`
+    `nginx -s reload`,
+    `pm2 restart 0`
   ],
 }
 const gulpSSH = new GulpSSH({
@@ -68,7 +69,7 @@ gulp.task('upload', gulp.series('await', (done) => {
 /**
  * 重新加载nginx
  */
-gulp.task('deploy', gulp.series('upload', () => {
+gulp.task('nginx', gulp.series('upload', () => {
   console.log('上传完毕.....')
   console.log('nginx重加载...')
   return gulpSSH.shell(config.commands[1], {
@@ -76,3 +77,15 @@ gulp.task('deploy', gulp.series('upload', () => {
     })
     .pipe(gulp.dest('logs'))
 }))
+/**
+ * 重新加载pm2
+ */
+gulp.task('deploy', gulp.series('nginx', () => {
+  console.log('上传完毕.....')
+  console.log('重启pm2...')
+  return gulpSSH.shell(config.commands[2], {
+      filePath: 'commands.log'
+    })
+    .pipe(gulp.dest('logs'))
+}))
+
