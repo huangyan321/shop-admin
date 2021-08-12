@@ -8,42 +8,21 @@ import store from './store'
 import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
-// import user from 'mock/user'
-// 尝试读取sessionStorage中的用户信息
-
-// import { fetchInit } from './utils/usual'
-// fetchInit();
-/**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online ! ! !
- */
-// if (process.env.NODE_ENV === 'production') {
-//   const { mockXHR } = require('../mock')
-//   mockXHR()
-// }
-
-// set ElementUI lang to EN
-// Vue.use(ElementUI, { locale })
-// // 如果想要中文版 element-ui，按如下方式声明
-// // Vue.use(ElementUI)
 // 在页面刷新时将store中的数据保存到sessionStorage中
 window.addEventListener("beforeunload",() => {
   let userInfo = {
     ...store.state.user
   }
-  window.sessionStorage.setItem("USER_INFO",JSON.stringify(userInfo))
+  window.sessionStorage.setItem("USER_INFO",JSON.stringify(userInfo));
 })
-let userInfo = window.sessionStorage.getItem("USER_INFO");
+// 在页面刷新后获取sessionStorage中的token
+const userInfo = window.sessionStorage.getItem("USER_INFO");
 if (userInfo) {
-  console.log(store.state.user);
-
-  store.replaceState(Object.assign({}, store.state.user, JSON.parse(userInfo)));
+  const user = JSON.parse(userInfo);
+  store.commit('user/SET_TOKEN', user.token);
+  store.commit('user/SET_NAME', user.name);
 }
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
 new Vue({
   el: '#app',
