@@ -10,7 +10,7 @@ import '@/icons' // icon
 import '@/permission' // permission control
 // import user from 'mock/user'
 // 尝试读取sessionStorage中的用户信息
-let userInfo = window.sessionStorage.getItem("USER_INFO");
+
 // import { fetchInit } from './utils/usual'
 // fetchInit();
 /**
@@ -37,9 +37,11 @@ window.addEventListener("beforeunload",() => {
   }
   window.sessionStorage.setItem("USER_INFO",JSON.stringify(userInfo))
 })
-if (Object.keys(userInfo).length === 0) {
-  store.replaceState(Object.assign({}, store.state.user, JSON.parse(userInfo)));
+let userInfo = window.sessionStorage.getItem("USER_INFO");
+if (userInfo) {
   console.log(store.state.user);
+
+  store.replaceState(Object.assign({}, store.state.user, JSON.parse(userInfo)));
 }
 Vue.config.productionTip = false
 
