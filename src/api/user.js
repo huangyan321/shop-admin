@@ -11,13 +11,6 @@ export function login(data) {
 export function getInfo(id) {
   return request({
     url: `/users/${id}`,
-    method: 'get',
-  })
-}
-
-export function logout() {
-  return request({
-    url: '/vue-admin-template/user/logout',
-    method: 'post'
+    method: 'get'
   })
 }

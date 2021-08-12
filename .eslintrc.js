@@ -1,3 +1,5 @@
+const { off } = require("gulp");
+
 module.exports = {
   root: true,
   parserOptions: {
@@ -37,12 +39,7 @@ module.exports = {
     'camelcase': [0, {
       'properties': 'always'
     }],
-    'comma-dangle': [2, 'never'],
-    'comma-spacing': [2, {
-      'before': false,
-      'after': true
-    }],
-    'comma-style': [2, 'last'],
+    'comma': 'off',
     'constructor-super': 2,
     'curly': [2, 'multi-line'],
     'dot-location': [2, 'property'],
@@ -162,11 +159,8 @@ module.exports = {
       }
     }],
     'padded-blocks': [2, 'never'],
-    'quotes': [2, 'single', {
-      'avoidEscape': true,
-      'allowTemplateLiterals': true
-    }],
-    'semi': [2, 'never'],
+    'quotes': 'off',
+    'semi': 'off',
     'semi-spacing': [2, {
       'before': false,
       'after': true
