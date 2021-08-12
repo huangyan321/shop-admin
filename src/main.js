@@ -8,6 +8,9 @@ import store from './store'
 import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
+// import user from 'mock/user'
+// 尝试读取sessionStorage中的用户信息
+let userInfo = window.sessionStorage.getItem("USER_INFO");
 // import { fetchInit } from './utils/usual'
 // fetchInit();
 /**
@@ -27,7 +30,17 @@ import '@/permission' // permission control
 // Vue.use(ElementUI, { locale })
 // // 如果想要中文版 element-ui，按如下方式声明
 // // Vue.use(ElementUI)
-
+// 在页面刷新时将store中的数据保存到sessionStorage中
+window.addEventListener("beforeunload",() => {
+  let userInfo = {
+    ...store.state.user
+  }
+  window.sessionStorage.setItem("USER_INFO",JSON.stringify(userInfo))
+})
+if (Object.keys(userInfo).length === 0) {
+  store.replaceState(Object.assign({}, store.state.user, JSON.parse(userInfo)));
+  console.log(store.state.user);
+}
 Vue.config.productionTip = false
 
 new Vue({
