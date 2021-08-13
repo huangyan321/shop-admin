@@ -35,7 +35,12 @@ import { Breadcrumb,
   Dialog,
   Card,
   Pagination,
-  Tooltip
+  Tooltip,
+  Cascader,
+  Tabs,
+  TabPane,
+  Timeline,
+  TimelineItem,
 } from "element-ui"
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
@@ -71,6 +76,11 @@ Vue.use(Dialog)
 Vue.use(Card)
 Vue.use(Pagination)
 Vue.use(Tooltip)
+Vue.use(Cascader)
+Vue.use(Tabs)
+Vue.use(TabPane)
+Vue.use(Timeline)
+Vue.use(TimelineItem)
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

@@ -82,264 +82,160 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <!-- 角色添加对话框 -->
-    <el-dialog
-      title="添加角色"
-      :visible.sync="addRoleDialogVisible"
-      width="50%"
-      @close="addRoleDialogClosed"
-    >
-      <!-- 对话框主体部分 -->
-      <el-form
-        ref="addRoleDialogFormRef"
-        :model="addRoleDialogForm"
-        :rules="addRoleDialogRules"
-        label-width="90px"
-      >
-        <!-- 添加角色名称区域 -->
-        <el-form-item label="角色名称" prop="roleName">
-          <el-input v-model="addRoleDialogForm.roleName" />
-        </el-form-item>
-        <!-- 添加角色描述区域 -->
-        <el-form-item label="角色描述" prop="roleDesc">
-          <el-input v-model="addRoleDialogForm.roleDesc" />
-        </el-form-item>
-      </el-form>
-      <!-- 对话框底部 -->
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="addRoleDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="sureAddRole">确 定</el-button>
-      </span>
-    </el-dialog>
-    <!-- 分配权限对话框 -->
-    <el-dialog
-      title="分配权限"
-      :visible.sync="showRightDialogVisible"
-      width="50%"
-      @close="ShowRightDialogClosed"
-    >
-      <!-- 树形控件 -->
-      <el-tree
-        ref="treeRef"
-        :data="rightsList"
-        :props="rightsListProps"
-        show-checkbox
-        node-key="id"
-        default-expand-all
-        :default-checked-keys="defKeys"
-      />
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="showRightDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="addRightsList">确 定</el-button>
-      </span>
-    </el-dialog>
+    <addRoleDialog
+      :add-role-dialog-visible="addRoleDialogVisible"
+      @successAdd="successAddRole"
+      @closeDialog="addRoleDialogVisible = false"
+    />
+    <assignRightDialog
+      :show-right-dialog-visible="showRightDialogVisible"
+      :rights-list="rightsList"
+      :def-keys="defKeys"
+      @successAssign="successAssignRole"
+      @closeDialog="ShowRightDialogClosed"
+    />
   </div>
 </template>
 
 <script>
+import {
+  getRolesInfo,
+  deleteRole,
+  deleteRight,
+  getRightsTree,
+} from "@/api/rights";
+import addRoleDialog from "./dialog/addRoleDialog.vue";
+import assignRightDialog from "./dialog/assignRightDialog.vue";
 export default {
-  name: 'Roles',
+  name: "Roles",
+  components: {
+    addRoleDialog,
+    assignRightDialog,
+  },
   data() {
     return {
       roleList: [],
-      addRoleDialogForm: {
-        roleName: '',
-        roleDesc: ''
-      },
-      addRoleDialogRules: {
-        roleName: [
-          { required: true, message: '请输入角色名称', trigger: 'blur' },
-          {
-            min: 3,
-            max: 10,
-            message: '长度在 3 到 10 个字符',
-            trigger: 'blur'
-          }
-        ],
-        roleDesc: [
-          { required: true, message: '请输入角色描述', trigger: 'blur' },
-          {
-            min: 3,
-            max: 10,
-            message: '长度在 3 到 10 个字符',
-            trigger: 'blur'
-          }
-        ]
-      },
       addRoleDialogVisible: false,
       // 分配权限对话框的隐藏于展示
       showRightDialogVisible: false,
       rightsList: [],
-      rightsListProps: {
-        label: 'authName',
-        children: 'children'
-      },
       defKeys: [],
-      roleId: ''
-    }
+      roleId: "",
+    };
   },
   created() {
-    this.getRolesList()
+    this.getRolesList();
   },
   methods: {
     // 获取角色数据
     async getRolesList() {
-      const { data: res } = await this.$http.get('roles')
-      // console.log(res);
-      if (res.meta.status !== 200) {
-        return this.$message.error('获取角色列表失败!')
-      } else {
-        this.roleList = res.data
-      }
+      const res = await getRolesInfo();
+      res.meta.status === 200
+        ? (() => {
+          this.roleList = res.data;
+        })()
+        : this.$notify.error(res.meta.msg);
     },
     addRole() {
-      this.addRoleDialogVisible = true
+      this.addRoleDialogVisible = true;
     },
-    // 关闭对话框清空内容
-    addRoleDialogClosed() {
-      this.$refs.addRoleDialogFormRef.resetFields()
+    successAddRole(status) {
+      this.addRoleDialogVisible = status;
+      this.getRolesList();
     },
-    // 确认添加角色
-    sureAddRole() {
-      this.$refs.addRoleDialogFormRef.validate(async(valid) => {
-        if (!valid) {
-          return
-        }
-        const { data: res } = await this.$http.post(
-          'roles',
-          this.addRoleDialogForm
-        )
-        if (res.meta.status !== 201) {
-          return this.$message.error('添加失败!')
-        } else {
-          this.getRolesList()
-          this.$message.success('添加成功!')
-        }
-      })
+    successAssignRole(status) {
+      this.showRightDialogVisible = status;
+      this.getRolesList();
     },
     // 删除角色
     roleDelete(id) {
-      this.$confirm('此操作将永久删除该角色, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+      this.$confirm("此操作将永久删除该角色, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(async() => {
-          const { data: res } = await this.$http.delete(`roles/${id}`)
-          // console.log(res);
-          if (res.meta.status !== 200) {
-            this.$message({
-              type: 'error',
-              message: '删除失败!'
-            })
-          } else {
-            this.$message({
-              type: 'success',
-              message: '删除成功!'
-            })
-            this.getRolesList()
-          }
+          const res = await deleteRole(id);
+          res.meta.status === 200
+            ? (() => {
+              this.getRolesList();
+              this.$notify.success("删除成功");
+            })()
+            : this.$notify.error(res.meta.msg);
         })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
+        .catch(() => {});
     },
     // 删除指定的权限
     removeRights(role, rightsId) {
-      this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
+      this.$confirm("是否永久解除该权限？", "权限删除", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
       })
         .then(async() => {
-          const { data: res } = await this.$http.delete(
-            `roles/${role.id}/rights/${rightsId}`
-          )
-          console.log(role.id)
-          if (res.meta.status !== 200) {
-            this.$message({
-              type: 'error',
-              message: '删除权限失败!'
-            })
-          } else {
-            this.$message({
-              type: 'success',
-              message: '删除权限成功!'
-            })
-            this.role.children = res.data;
-          }
+          const res = await deleteRight(role.id, rightsId);
+          res.meta.status === 200
+            ? (() => {
+              role.children = res.data;
+              this.$notify.success("请求成功");
+            })()
+            : this.$notify.error(res.meta.msg);
         })
         .catch(() => {
           this.$message({
-            type: 'info',
-            message: '已取消删除'
-          })
-        })
+            type: "info",
+            message: "已取消删除",
+          });
+        });
     },
     // 获取权限对话框
     async ShowRightDialog(role) {
-      const { data: res } = await this.$http.get('rights/tree')
-      // console.log(res);
+      const res = await getRightsTree();
       if (res.meta.status !== 200) {
-        return this.$message.error('获取权限失败!')
+        return this.$message.error("获取权限失败!");
       } else {
-        this.rightsList = res.data
-        this.roleId = role.id
+        this.rightsList = res.data;
+        this.roleId = role.id;
       }
       // 利用递归获取三级权限的id
-      this.getDefKeys(role, this.defKeys)
-      this.showRightDialogVisible = true
+      this.getDefKeys(role, this.defKeys);
+      this.showRightDialogVisible = true;
     },
     // 利用递归获取三级权限的id，并保存到defKeys 数组中
     getDefKeys(node, arr) {
       if (!node.children) {
-        return arr.push(node.id)
+        return arr.push(node.id);
       }
       node.children.forEach((item) => {
-        this.getDefKeys(item, arr)
-      })
+        this.getDefKeys(item, arr);
+      });
     },
     // 对话框关闭时时清空defKeys数组
     ShowRightDialogClosed() {
-      this.defKeys = []
-    },
-    // 为角色增加权限
-    async addRightsList() {
-      const checkId = [
-        ...this.$refs.treeRef.getCheckedKeys(),
-        ...this.$refs.treeRef.getHalfCheckedKeys()
-      ]
-      const str = checkId.join(',')
-      const { data: res } = await this.$http.post(
-        `roles/${this.roleId}/rights`,
-        {
-          rids: str
-        }
-      )
-      if (res.meta.status !== 200) {
-        return this.$message.error('添加权限失败!')
-      } else {
-        this.$message.success('添加权限成功!')
-        this.getRolesList()
-      }
+      this.showRightDialogVisible = false
+      this.defKeys = [];
     }
-  }
-}
+  },
+};
 </script>
 
 <style scoped>
 .bdbottom {
   border-bottom: 1px solid #eee;
 }
-
 .bdtop {
   border-top: 1px solid #eee;
 }
 .vcenter {
+  padding: 0.1rem 0.05rem;
   display: flex;
   align-items: center;
+}
+.el-tag {
+  margin-left: 0.5rem;
+}
+.el-input {
+  position: relative;
+  width: 85%;
 }
 </style>

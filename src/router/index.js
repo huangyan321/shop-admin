@@ -135,6 +135,21 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/reports',
+    component: Layout,
+    redirect: '/reports/report',
+    name: 'report',
+    meta: { title: '数据报表', icon: 'el-icon-s-help' },
+    children: [
+      {
+        path: 'report',
+        name: 'report',
+        component: () => import('@/views/report'),
+        meta: { title: '数据报表', icon: 'form' }
+      },
+    ]
+  },
+  {
     path: 'external-link',
     component: Layout,
     children: [

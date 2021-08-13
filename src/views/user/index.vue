@@ -264,4 +264,10 @@ export default {
   width: 44px;
   height: 28px;
 }
+.box-card {
+  position: relative;
+  margin-top: 0.2rem;
+  height: 16rem;
+}
+
 </style>
