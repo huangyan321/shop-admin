@@ -11,7 +11,7 @@ import '@/icons' // icon
 import '@/permission' // permission control
 // 在页面刷新时将store中的数据保存到sessionStorage中
 window.addEventListener("beforeunload",() => {
-  let userInfo = {
+  const userInfo = {
     ...store.state.user
   }
   window.sessionStorage.setItem("USER_INFO",JSON.stringify(userInfo));
