@@ -3,6 +3,7 @@ import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 // import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 import '@/styles/index.scss' // global css
 import './elementUI'
+import 'lib-flexible'
 import App from './App'
 import store from './store'
 import router from './router'

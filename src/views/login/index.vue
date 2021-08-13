@@ -60,7 +60,7 @@
 
       <div class="tips">
         <span style="margin-right: 20px">username: admin</span>
-        <span> password: any</span>
+        <span> password: 123456</span>
       </div>
     </el-form>
     <div class="footer">
@@ -184,7 +184,7 @@ $cursor: #fff;
     bottom: 0;
     left: 50%;
     transform: translate(-50%);
-    font-size: 0.6rem;
+    font-size: 0.2rem;
   }
   .el-input {
     display: inline-block;

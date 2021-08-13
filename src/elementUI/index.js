@@ -24,13 +24,18 @@ import { Breadcrumb,
   Button,
   Row,
   Alert,
+  Table,
   TableColumn,
   Tag,
   Tree,
   Loading,
   MessageBox,
   Message,
-  Notification
+  Notification,
+  Dialog,
+  Card,
+  Pagination,
+  Tooltip
 } from "element-ui"
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
@@ -58,9 +63,14 @@ Vue.use(Button)
 Vue.use(Row)
 Vue.use(Alert)
 Vue.use(Row)
+Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Tag)
 Vue.use(Tree)
+Vue.use(Dialog)
+Vue.use(Card)
+Vue.use(Pagination)
+Vue.use(Tooltip)
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

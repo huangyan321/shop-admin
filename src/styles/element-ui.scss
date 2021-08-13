@@ -47,3 +47,16 @@
 .el-range-separator {
   box-sizing: content-box;
 }
+.el-pagination {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.el-table {
+  margin-top: 0.5rem;
+}
+.box-card {
+  position: relative;
+  margin-top: 0.2rem;
+  height: 16rem;
+}

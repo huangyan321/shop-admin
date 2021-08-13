@@ -1,4 +1,4 @@
-import { login, getInfo } from '@/api/user'
+import { login, getInfo } from '@/api/login'
 import {
   getToken,
   setToken,
