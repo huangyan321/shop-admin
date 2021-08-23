@@ -39,6 +39,8 @@ import { Breadcrumb,
   Cascader,
   Tabs,
   TabPane,
+  Step,
+  Steps,
 } from "element-ui"
 Vue.use(Breadcrumb)
 Vue.use(BreadcrumbItem)
@@ -77,6 +79,8 @@ Vue.use(Tooltip)
 Vue.use(Cascader)
 Vue.use(Tabs)
 Vue.use(TabPane)
+Vue.use(Step)
+Vue.use(Steps)
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$alert = MessageBox.alert;

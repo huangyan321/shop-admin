@@ -8,6 +8,25 @@
 </template>
 
 <script>
+import * as echarts from 'echarts/core';
+import {
+  TitleComponent,
+  ToolboxComponent,
+  TooltipComponent,
+  GridComponent,
+  LegendComponent
+} from 'echarts/components';
+import {
+  LineChart
+} from 'echarts/charts';
+import {
+  CanvasRenderer
+} from 'echarts/renderers';
+
+echarts.use(
+  [TitleComponent, ToolboxComponent, TooltipComponent, GridComponent, LegendComponent, LineChart, CanvasRenderer]
+);
+import { getReports } from "@/api/reports"
 export default {
   // components: {
   //   echarts
@@ -47,10 +66,9 @@ export default {
     }
   },
   async mounted() {
-    var myChart = this.$echarts.init(document.getElementById('main'));
+    var myChart = echarts.init(document.getElementById('main'));
     // 指定图表的配置项和数据
-    const { data: res } = await this.$http.get('reports/type/1')
-    console.log(res);
+    const res = await getReports()
     var charts = this.$_.merge(res.data,this.options)
     // 使用刚指定的配置项和数据显示图表。
     myChart.setOption(charts);

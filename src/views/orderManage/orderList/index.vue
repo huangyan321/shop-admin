@@ -75,6 +75,7 @@
 
 <script>
 import cityData from './citydata.js'
+import { getOrderList,getProgress } from '@/api/order'
 
 export default {
   data() {
@@ -109,12 +110,10 @@ export default {
   },
   methods: {
     async getOrderList() {
-      const { data: res } = await this.$http.get('orders', {
-        params: this.queryInfo
-      })
+      const res = await getOrderList(this.queryInfo)
 
       if (res.meta.status !== 200) {
-        return this.$message.error('获取订单列表失败！')
+        return this.$notify.error(res.meta.msg);
       }
 
       console.log(res)
@@ -137,10 +136,10 @@ export default {
       this.$refs.addressFormRef.resetFields()
     },
     async showProgressBox() {
-      const { data: res } = await this.$http.get('/kuaidi/804909574412544580')
+      const res = await getProgress()
 
       if (res.meta.status !== 200) {
-        return this.$message.error('获取物流进度失败！')
+        return this.$notify.error(res.meta.msg);
       }
 
       this.progressInfo = res.data

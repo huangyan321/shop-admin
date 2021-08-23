@@ -5,6 +5,7 @@ import '@/styles/index.scss' // global css
 import './elementUI'
 import 'lib-flexible'
 import App from './App'
+import lodash from 'lodash'
 import store from './store'
 import router from './router'
 import '@/icons' // icon
@@ -16,6 +17,7 @@ window.addEventListener("beforeunload",() => {
   }
   window.sessionStorage.setItem("USER_INFO",JSON.stringify(userInfo));
 })
+Vue.prototype.$_ = lodash
 // 在页面刷新后获取sessionStorage中的token
 const userInfo = window.sessionStorage.getItem("USER_INFO");
 if (userInfo) {

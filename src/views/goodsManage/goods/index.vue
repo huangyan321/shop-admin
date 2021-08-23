@@ -39,6 +39,10 @@
 </template>
 
 <script>
+import {
+  getGoodsList,
+  goodDelete
+} from "@/api/goods"
 export default {
   data() {
     return {
@@ -60,15 +64,12 @@ export default {
   methods: {
     // 根据分页获取对应的商品列表
     async getGoodsList() {
-      const { data: res } = await this.$http.get('goods', {
-        params: this.queryInfo
-      })
-
+      const res = await getGoodsList(this.queryInfo)
       if (res.meta.status !== 200) {
-        return this.$message.error('获取商品列表失败！')
+        return this.$notify.error(res.meta.msg);
       }
 
-      this.$message.success('获取商品列表成功！')
+      this.$notify.success(res.meta.msg);
       console.log(res.data)
       this.goodslist = res.data.goods
       this.total = res.data.total
@@ -93,16 +94,16 @@ export default {
       ).catch(err => err)
 
       if (confirmResult !== 'confirm') {
-        return this.$message.info('已经取消删除！')
+        return this.$notify.info("取消删除");
       }
 
-      const { data: res } = await this.$http.delete(`goods/${id}`)
+      const res = await goodDelete(id)
 
       if (res.meta.status !== 200) {
-        return this.$message.error('删除失败！')
+        return this.$notify.error(res.meta.msg);
       }
 
-      this.$message.success('删除成功！')
+      this.$notify.success(res.meta.msg);
       this.getGoodsList()
     },
     goAddpage() {

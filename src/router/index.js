@@ -120,6 +120,17 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/goods',
+    component: Layout,
+    redirect: '/goods/add',
+    name: 'goods',
+    children: [{
+      path: 'add',
+      name: 'add',
+      component: () => import('@/views/goodsManage/goods/addGoods/Add'),
+    }]
+  },
+  {
     path: '/orderManage',
     component: Layout,
     redirect: '/orderManage/orderList',
